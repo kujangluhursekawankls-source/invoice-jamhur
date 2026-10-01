@@ -103,13 +103,30 @@ function MainApp() {
   };
 
   const handleDeleteInvoice = (id: string) => {
+    const target = String(id || '').trim().toLowerCase();
+    if (!target) return;
+
+    // 1. Hapus dari database storage & sync
     storageService.deleteInvoice(id);
-    const updated = storageService.getInvoices();
-    setInvoices(updated);
-    if (previewInvoice && (previewInvoice.id === id || previewInvoice.invoiceNumber === id)) {
-      setPreviewInvoice(null);
+
+    // 2. Langsung hapus dari state React saat itu juga
+    setInvoices((prev) =>
+      prev.filter((inv) => {
+        const invId = String(inv.id || '').trim().toLowerCase();
+        const invNum = String(inv.invoiceNumber || '').trim().toLowerCase();
+        return invId !== target && invNum !== target;
+      })
+    );
+
+    if (previewInvoice) {
+      const prevId = String(previewInvoice.id || '').trim().toLowerCase();
+      const prevNum = String(previewInvoice.invoiceNumber || '').trim().toLowerCase();
+      if (prevId === target || prevNum === target) {
+        setPreviewInvoice(null);
+      }
     }
-    showToast('Invoice berhasil dihapus', 'success');
+
+    showToast('Invoice berhasil dihapus!', 'success');
   };
 
   // Langsung buka modal review & download agar proses render 100% presisi dan tajam

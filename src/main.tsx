@@ -3,7 +3,7 @@ import App from './App.tsx';
 import './index.css';
 
 // Registrasi Service Worker untuk PWA Offline & PWABuilder
-if ('serviceWorker' in navigator && process.env.NODE_ENV !== 'test') {
+if ('serviceWorker' in navigator && import.meta.env.MODE !== 'test') {
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/sw.js')

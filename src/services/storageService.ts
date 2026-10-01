@@ -440,11 +440,11 @@ class StorageService {
   }
 
   public deleteInvoice(id: string): void {
-    const target = String(id || '').trim();
+    const target = String(id || '').trim().toLowerCase();
     if (!target) return;
     const invoices = this.getInvoices().filter((inv) => {
-      const matchId = inv.id && String(inv.id).trim() === target;
-      const matchNumber = inv.invoiceNumber && String(inv.invoiceNumber).trim() === target;
+      const matchId = inv.id && String(inv.id).trim().toLowerCase() === target;
+      const matchNumber = inv.invoiceNumber && String(inv.invoiceNumber).trim().toLowerCase() === target;
       return !matchId && !matchNumber;
     });
     localStorage.setItem(this.getTenantKey('invoices'), JSON.stringify(invoices));
