@@ -104,10 +104,12 @@ function MainApp() {
 
   const handleDeleteInvoice = (id: string) => {
     storageService.deleteInvoice(id);
-    setInvoices(storageService.getInvoices());
-    if (previewInvoice?.id === id) {
+    const updated = storageService.getInvoices();
+    setInvoices(updated);
+    if (previewInvoice && (previewInvoice.id === id || previewInvoice.invoiceNumber === id)) {
       setPreviewInvoice(null);
     }
+    showToast('Invoice berhasil dihapus', 'success');
   };
 
   // Langsung buka modal review & download agar proses render 100% presisi dan tajam

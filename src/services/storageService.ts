@@ -440,7 +440,13 @@ class StorageService {
   }
 
   public deleteInvoice(id: string): void {
-    const invoices = this.getInvoices().filter((inv) => inv.id !== id);
+    const target = String(id || '').trim();
+    if (!target) return;
+    const invoices = this.getInvoices().filter((inv) => {
+      const matchId = inv.id && String(inv.id).trim() === target;
+      const matchNumber = inv.invoiceNumber && String(inv.invoiceNumber).trim() === target;
+      return !matchId && !matchNumber;
+    });
     localStorage.setItem(this.getTenantKey('invoices'), JSON.stringify(invoices));
     this.syncToCloud();
   }

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Search, Plus, Eye, Download, Edit2, Trash2, FileText, CheckCircle2 } from 'lucide-react';
+import { Search, Plus, Eye, Download, Edit2, Trash2, FileText, AlertTriangle } from 'lucide-react';
 import { Invoice, InvoiceStatus, BusinessProfile } from '../types';
 import { formatRupiah, formatTanggalIndo } from '../utils/formatters';
-import { ConfirmModal } from '../components/ConfirmModal';
 import { useToast } from '../context/ToastContext';
 import { getInvoiceFileName } from '../utils/pdfGenerator';
 
@@ -41,12 +40,9 @@ export const InvoiceListView: React.FC<InvoiceListViewProps> = ({
     return matchesSearch && matchesStatus;
   });
 
-  const handleConfirmDelete = () => {
-    if (deletingId) {
-      onDeleteInvoice(deletingId);
-      showToast('Invoice berhasil dihapus', 'info');
-      setDeletingId(null);
-    }
+  const handleExecuteDelete = (id: string, invoiceNumber: string) => {
+    onDeleteInvoice(id);
+    setDeletingId(null);
   };
 
   return (
@@ -186,77 +182,101 @@ export const InvoiceListView: React.FC<InvoiceListViewProps> = ({
                   </span>
                 </div>
 
-                {/* Sesuai Permintaan: Tombol Cukup Download PDF dan Review */}
-                <div className="flex items-center gap-2 pt-1 border-t border-slate-100">
-                  {/* Tombol Review */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      showToast('Membuka review invoice...', 'info');
-                      onPreviewInvoice(inv);
-                    }}
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-xs font-bold active:scale-95 transition-all"
-                  >
-                    <Eye className="w-3.5 h-3.5" />
-                    <span>Review</span>
-                  </button>
+                {/* Tombol Aksi atau Konfirmasi Hapus Langsung */}
+                {deletingId === (inv.id || inv.invoiceNumber) ? (
+                  <div className="pt-1 border-t border-rose-100">
+                    <div className="flex items-center justify-between gap-2 p-2.5 bg-rose-50 border border-rose-200 rounded-xl">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                        <span className="text-xs font-bold text-rose-900 truncate">
+                          Hapus invoice {inv.invoiceNumber}?
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDeletingId(null);
+                          }}
+                          className="px-2.5 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg text-xs font-bold active:scale-95 transition-all shadow-xs"
+                        >
+                          Batal
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleExecuteDelete(inv.id || inv.invoiceNumber, inv.invoiceNumber);
+                          }}
+                          className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold active:scale-95 shadow-sm shadow-rose-600/30 transition-all flex items-center gap-1"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>Ya, Hapus</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 pt-1 border-t border-slate-100">
+                    {/* Tombol Review */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        showToast('Membuka review invoice...', 'info');
+                        onPreviewInvoice(inv);
+                      }}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-xs font-bold active:scale-95 transition-all"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      <span>Review</span>
+                    </button>
 
-                  {/* Tombol Download PDF */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      showToast(`Mengunduh ${fileName}...`, 'info');
-                      onDirectDownload(inv);
-                    }}
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold active:scale-95 transition-all shadow-xs"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    <span>Download PDF</span>
-                  </button>
+                    {/* Tombol Download PDF */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        showToast(`Mengunduh ${fileName}...`, 'info');
+                        onDirectDownload(inv);
+                      }}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold active:scale-95 transition-all shadow-xs"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download PDF</span>
+                    </button>
 
-                  {/* Tombol Edit */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      showToast('Mengedit invoice...', 'info');
-                      onEditInvoice(inv);
-                    }}
-                    className="p-2.5 text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl active:scale-95 transition-all"
-                    title="Edit Invoice"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                  </button>
+                    {/* Tombol Edit */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        showToast('Mengedit invoice...', 'info');
+                        onEditInvoice(inv);
+                      }}
+                      className="p-2.5 text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl active:scale-95 transition-all"
+                      title="Edit Invoice"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
 
-                  {/* Tombol Hapus */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setDeletingId(inv.id);
-                    }}
-                    className="p-2.5 text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl active:scale-95 transition-all"
-                    title="Hapus Invoice"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
+                    {/* Tombol Hapus */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeletingId(inv.id || inv.invoiceNumber);
+                      }}
+                      className="p-2.5 text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl active:scale-95 transition-all"
+                      title="Hapus Invoice"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })}
         </div>
       )}
-
-      {/* Modal Konfirmasi Hapus Invoice */}
-      <ConfirmModal
-        isOpen={!!deletingId}
-        title="Konfirmasi Hapus Invoice"
-        message="Apakah Anda yakin ingin menghapus invoice ini? Data yang sudah dihapus tidak dapat dipulihkan."
-        confirmText="Ya, Hapus"
-        cancelText="Batal"
-        confirmVariant="danger"
-        onConfirm={handleConfirmDelete}
-        onCancel={() => setDeletingId(null)}
-      />
     </div>
   );
 };

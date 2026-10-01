@@ -78,9 +78,8 @@ export const InvoicePreviewModal: React.FC<InvoicePreviewModalProps> = ({
 
   const handleConfirmDelete = () => {
     setShowDeleteConfirm(false);
-    if (onDelete && invoice.id) {
-      onDelete(invoice.id);
-      showToast(`Invoice ${invoice.invoiceNumber} berhasil dihapus`, 'info');
+    if (onDelete) {
+      onDelete(invoice.id || invoice.invoiceNumber);
       onClose();
     }
   };
