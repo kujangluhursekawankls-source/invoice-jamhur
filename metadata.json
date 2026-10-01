@@ -1,0 +1,6 @@
+{
+  "name": "Invoice Jamhur",
+  "description": "Aplikasi Pembuat Invoice Android profesional dengan ekspor PDF presisi tinggi sesuai referensi, multi-user, backup online, kelola pelanggan, produk, tanda tangan, stempel, dan profil usaha.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

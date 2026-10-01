@@ -1,0 +1,32 @@
+{
+  "id": "/",
+  "name": "Invoice CV Mulia Tekhnik Abadi",
+  "short_name": "Invoice MTA",
+  "description": "Aplikasi Pembuat Invoice Resmi dan Pembukuan Usaha CV Mulia Tekhnik Abadi",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#0B3B7B",
+  "categories": ["business", "finance", "productivity"],
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

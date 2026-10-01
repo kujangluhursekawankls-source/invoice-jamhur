@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B3B7B"/>
+      <stop offset="50%" stop-color="#1E40AF"/>
+      <stop offset="100%" stop-color="#09254d"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <!-- Background with rounded corners -->
+  <rect width="512" height="512" rx="110" fill="url(#bgGrad)"/>
+  
+  <!-- Document Sheet -->
+  <rect x="116" y="86" width="280" height="340" rx="20" fill="#ffffff" filter="drop-shadow(0 15px 25px rgba(0,0,0,0.35))"/>
+  
+  <!-- Document Header bar -->
+  <rect x="146" y="116" width="140" height="24" rx="6" fill="#0B3B7B"/>
+  <rect x="306" y="116" width="60" height="24" rx="6" fill="#E2E8F0"/>
+  
+  <!-- Document Lines -->
+  <rect x="146" y="160" width="220" height="12" rx="4" fill="#CBD5E1"/>
+  <rect x="146" y="186" width="180" height="12" rx="4" fill="#E2E8F0"/>
+  
+  <!-- Table Header -->
+  <rect x="146" y="220" width="220" height="26" rx="6" fill="#0B3B7B"/>
+  <rect x="146" y="256" width="220" height="16" rx="4" fill="#F8FAFC"/>
+  <rect x="146" y="280" width="220" height="16" rx="4" fill="#FFFFFF"/>
+  <rect x="146" y="304" width="220" height="16" rx="4" fill="#F8FAFC"/>
+  
+  <!-- Total Tagihan Bar -->
+  <rect x="226" y="336" width="140" height="30" rx="8" fill="url(#goldGrad)"/>
+  <text x="296" y="357" font-family="Arial, sans-serif" font-weight="900" font-size="14" fill="#FFFFFF" text-anchor="middle">TOTAL</text>
+  
+  <!-- Accent Badge IJ -->
+  <circle cx="396" cy="116" r="32" fill="#F59E0B" filter="drop-shadow(0 8px 16px rgba(0,0,0,0.3))"/>
+  <text x="396" y="125" font-family="Arial, sans-serif" font-weight="900" font-size="22" fill="#FFFFFF" text-anchor="middle">IJ</text>
+</svg>
